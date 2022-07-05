@@ -19,5 +19,23 @@
       <jdbc-url>jdbc:mysql://localhost:3306/courses?serverTimezone=UTC&amp;allowPublicKeyRetrieval=false</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="msvc-cursos/Hibernate" uuid="1b085a49-1a3e-42b8-9e9c-88bcc8bb8f39">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>Hibernate</remarks>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/courses?serverTimezone=UTC&amp;allowPublicKeyRetrieval=false</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="msvc-usuarios/Hibernate" uuid="e483a631-568c-4f69-92b1-54d86062d2aa">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>Hibernate</remarks>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/users?serverTimezone=UTC&amp;allowPublicKeyRetrieval=false</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

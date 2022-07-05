@@ -11,9 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-public class CourseServiceImpl implements CourseService{
+public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private CourseRepository courseRepository;
@@ -41,21 +42,21 @@ public class CourseServiceImpl implements CourseService{
     @Override
     @Transactional
     public void deleteCourse(Long id) {
-    courseRepository.deleteById(id);
+        courseRepository.deleteById(id);
     }
 
     @Override
     @Transactional
     public Optional<UserPOJO> assignUser(UserPOJO user, Long idCourse) {
         Optional<Course> courseOptional = courseRepository.findById(idCourse);
-        if(courseOptional.isPresent()){
-          UserPOJO userPOJO =  userClients.userDetail(user.getId());
-          Course course = courseOptional.get();
+        if (courseOptional.isPresent()) {
+            UserPOJO userPOJO = userClients.userDetail(user.getId());
+            Course course = courseOptional.get();
             CourseUser courseUser = new CourseUser();
             courseUser.setUserId(userPOJO.getId());
-          course.addCourseUsers(courseUser);
-          courseRepository.save(course);
-          return Optional.of(userPOJO);
+            course.addCourseUsers(courseUser);
+            courseRepository.save(course);
+            return Optional.of(userPOJO);
         }
 
         return Optional.empty();
@@ -65,8 +66,8 @@ public class CourseServiceImpl implements CourseService{
     @Transactional
     public Optional<UserPOJO> quitUser(UserPOJO user, Long idCourse) {
         Optional<Course> courseOptional = courseRepository.findById(idCourse);
-        if(courseOptional.isPresent()){
-            UserPOJO userPOJO =  userClients.userDetail(user.getId());
+        if (courseOptional.isPresent()) {
+            UserPOJO userPOJO = userClients.userDetail(user.getId());
             Course course = courseOptional.get();
             CourseUser courseUser = new CourseUser();
             courseUser.setUserId(userPOJO.getId());
@@ -82,7 +83,7 @@ public class CourseServiceImpl implements CourseService{
     @Transactional
     public Optional<UserPOJO> createUserCourse(UserPOJO user, Long idCourse) {
         Optional<Course> courseOptional = courseRepository.findById(idCourse);
-        if(courseOptional.isPresent()){
+        if (courseOptional.isPresent()) {
             UserPOJO newUserPOJO = userClients.createUser(user);
             Course course = courseOptional.get();
             CourseUser courseUser = new CourseUser();
@@ -92,5 +93,29 @@ public class CourseServiceImpl implements CourseService{
         }
 
         return Optional.empty();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Course> findCourseByUsers(Long id) {
+        Optional<Course> courseOptional = findCourseById(id);
+        if (courseOptional.isPresent()) {
+            Course curso = courseOptional.get();
+            if (!curso.getCourseUsers().isEmpty()) {
+                List<Long> ids = curso.getCourseUsers()
+                        .stream().map(curseUser -> curseUser.getUserId())
+                        .collect(Collectors.toList());
+                List<UserPOJO> usuarios = userClients.usersByCourses(ids);
+                curso.setUserPOJOList(usuarios);
+            }
+            return Optional.of(curso);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    @Transactional
+    public void deleteCurseUserById(Long id) {
+        courseRepository.deleteCourseUserById(id);
     }
 }

@@ -55,4 +55,12 @@ public class Course {
     public void setCourseUsers(List<CourseUser> courseUsers) {
         this.courseUsers = courseUsers;
     }
+
+    public List<UserPOJO> getUserPOJOList() {
+        return userPOJOList;
+    }
+
+    public void setUserPOJOList(List<UserPOJO> userPOJOList) {
+        this.userPOJOList = userPOJOList;
+    }
 }
